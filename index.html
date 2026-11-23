@@ -518,13 +518,20 @@ textarea.cycle-field { min-height:78px; font:inherit; padding-block:8px }
 .chat-start h1 { text-wrap:balance }
 .chat-start-card { background:#fffffff5; border-color:#d8d9ec; box-shadow:0 10px 42px #353e9e12 }
 .agentic-composer textarea:focus-visible { outline-color:#bbbdf1 }
-.chat-backdrop { position:absolute; z-index:-1; pointer-events:none; inset:6% auto auto 50%;
-  width:min(980px,100%); height:80%; transform:translateX(-50%);
-  background:radial-gradient(ellipse at 50% 43%,#ecefff 4%,transparent 68%); opacity:.85;
+.chat-backdrop { position:absolute; z-index:-1; pointer-events:none; inset:0; overflow:hidden;
+  background:
+    radial-gradient(ellipse 52% 48% at 50% 40%,#e9e8fc 0%,#f1f0fb 47%,transparent 95%),
+    radial-gradient(ellipse 43% 32% at 50% 58%,#edf1f9 5%,transparent 95%);
 }
 .chat-backdrop::before { content:""; position:absolute; inset:0;
-  background-image:radial-gradient(#8d97dd7a .65px,transparent .9px); background-size:19px 19px;
-  mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 69%);
+  background-image:radial-gradient(#858bad66 .75px,transparent 1px); background-size:22px 22px;
+  mask-image:radial-gradient(ellipse 47% 34% at 50% 43%,#000 0%,#0009 43%,transparent 100%);
+}
+.chat-backdrop::after { content:""; position:absolute; inset:45% 0 0;
+  background-image:linear-gradient(#c6c8de6b 1px,transparent 1px),linear-gradient(90deg,#c6c8de6b 1px,transparent 1px);
+  background-size:41px 31px; background-position:center top;
+  transform:perspective(520px) rotateX(52deg); transform-origin:center top;
+  mask-image:radial-gradient(ellipse 49% 45% at 50% 31%,#000a,transparent 100%);
 }
 .chat-clarification,.agentic-progress,.comparison-note { background:#efefff; border-color:#dadaf7; color:#323795 }
 .agentic-live-dot { background:var(--brand-primary) }
@@ -591,12 +598,12 @@ textarea.cycle-field { min-height:78px; font:inherit; padding-block:8px }
 .is-live .chat-graph-status { color:#3036af; font-weight:700 }
 .chat-graph-goal,.chat-graph-composer,.chat-graph-answers { position:absolute; left:0; right:0 }
 .chat-graph-goal { bottom:calc(50% + 87px) }
-.chat-welcome { display:grid; justify-items:center; gap:8px; text-align:center }
-.chat-welcome-mark { width:52px; height:52px; margin-bottom:5px; border-radius:15px;
-  background:linear-gradient(147deg,#616bff,#414acb); box-shadow:0 4px 10px #3c47ba38,0 0 0 6px #ffffffb5;
+.chat-welcome { display:grid; justify-items:center; gap:11px; text-align:center }
+.chat-welcome-mark { width:52px; height:52px; margin-bottom:7px; border-radius:15px;
+  background:linear-gradient(147deg,#555fdb,#303aab); box-shadow:0 6px 15px #36428e26,0 0 0 5px #ffffff94;
 }
-.chat-graph-goal h1 { font-size:clamp(25px,2.5vw,34px); line-height:1.24; font-weight:680; letter-spacing:-.026em; text-wrap:balance }
-.chat-welcome p { max-width:36em; color:#59647a; font-size:clamp(13px,1.15vw,15px); line-height:1.7; text-wrap:balance }
+.chat-welcome h1 { color:#1b2137; font-size:clamp(28px,3.2vw,40px); line-height:1.17; font-weight:700; letter-spacing:-.03em; text-wrap:balance }
+.chat-welcome p { max-width:38em; color:#59647a; font-size:clamp(13px,1.25vw,16px); line-height:1.65; text-wrap:balance }
 .chat-graph-goal .chat-clarification { margin:6px 0 0 }
 .chat-graph-composer { top:50%; transform:translateY(-50%); border-radius:18px; background:#fff }
 .chat-graph-composer .agentic-composer { padding:13px 13px 11px; min-height:130px }
@@ -621,6 +628,28 @@ textarea.cycle-field { min-height:78px; font:inherit; padding-block:8px }
   .chat-card-stream { animation:chat-card-stream 1.8s ease-out both }
 }
 @media (prefers-reduced-motion:reduce) { .chat-graph .chat-backdrop { transition:none } }
+@media (min-width:851px) {
+  .chat-graph { container-type:inline-size }
+  .chat-graph-goal { display:grid }
+  .chat-graph-goal > :is(.chat-welcome,#chatTaskCard) { grid-area:1/1; align-self:end }
+  .chat-graph-composer { left:50%; right:auto; width:100%; transform:translate(-50%,-50%) }
+  .chat-graph:not(.has-chat-canvas, .has-conversation) .chat-graph-goal {
+    bottom:calc(50% + 101px); left:50%; right:auto; width:min(760px,86cqw); transform:translateX(-50%);
+  }
+  .chat-graph:not(.has-chat-canvas, .has-conversation) .chat-graph-composer {
+    width:min(760px,86cqw); border-radius:21px;
+  }
+  .chat-graph:not(.has-chat-canvas, .has-conversation) .agentic-composer { min-height:145px; padding:16px 16px 13px }
+  .chat-graph:not(.has-chat-canvas, .has-conversation) #mainChatDraft { min-height:67px; font-size:16px }
+}
+@media (min-width:851px) and (prefers-reduced-motion:no-preference) {
+  .chat-graph-composer { transition:width 220ms ease-out,border-radius 180ms ease-out }
+  @supports (transition-behavior:allow-discrete) {
+    .chat-welcome { transition:opacity 180ms ease-out,display 180ms allow-discrete }
+    .chat-welcome[hidden] { opacity:0 }
+    @starting-style { .chat-welcome:not([hidden]) { opacity:0 } }
+  }
+}
 dialog.drawer[data-drawer-type="chat-evidence"] { width:min(752px,100vw) }
 dialog.drawer[data-drawer-type="chat-evidence"]::backdrop { background:#14143a29 }
 .chat-evidence-context { color:var(--muted); font-size:13px; margin-bottom:8px }
@@ -934,6 +963,9 @@ dialog.drawer[data-drawer-type="chat-evidence"]::backdrop { background:#20223c32
 .chat-goal-card { box-shadow:0 1px 4px #2023470c; border-color:#dcdeee }
 .chat-graph-composer { border-color:#dce1ee; box-shadow:0 14px 36px #30396613,0 2px 5px #22295308 }
 .chat-graph-composer:focus-within { border-color:#8c98df; box-shadow:0 0 0 3px #434bff12,0 12px 30px #28357514 }
+.chat-graph:not(.has-chat-canvas, .has-conversation) .chat-graph-composer:not(:focus-within) {
+  border-color:#dce0ed; box-shadow:0 18px 44px #30396612,0 3px 9px #22295308;
+}
 .canvas-section-meta .control.evidence-follow-switch { gap:7px; background:#f6f6fc; border-color:#e7e7f2; border-radius:8px; min-height:33px }
 .canvas-section-meta .control.evidence-follow-switch:hover { background:#ededfa; border-color:#d8d9f0 }
 .evidence-follow-switch > i { background:#6f758a; box-shadow:none; width:34px }
@@ -990,7 +1022,8 @@ dialog.drawer .dialog-footer .control { min-height:38px }
 .chat-run-recovery { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:9px; font-size:12px; color:var(--ui-muted) }
 @media (max-width:480px) {
   .chat-graph-center { padding-top:clamp(45px,11vh,90px) }
-  .chat-welcome { gap:7px }
+  .chat-welcome { gap:8px; margin-bottom:17px }
+  .chat-welcome h1 { font-size:clamp(25px,7vw,31px) }
   .chat-welcome-mark { width:44px; height:44px }
   .chat-shortcut-hint { display:none }
   .chat-model-picker > .icon { display:none }
